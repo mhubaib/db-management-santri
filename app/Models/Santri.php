@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Santri extends Model
@@ -30,8 +31,8 @@ class Santri extends Model
         return $this->belongsTo(Kelas::class);
     }
 
-    public function absensi(): HasOne
+    public function absensi(): HasMany
     {
-        return $this->hasOne(Absensi::class);
+        return $this->hasMany(Absensi::class);
     }
 }

@@ -38,6 +38,6 @@ class DatabaseSeeder extends Seeder
         Jadwal::factory(20)->create();
 
         // Absensi
-        Absensi::factory(1000)->create();
+        Absensi::factory(50)->create();
     }
 }

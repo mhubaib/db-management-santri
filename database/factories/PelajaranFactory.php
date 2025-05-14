@@ -16,8 +16,16 @@ class PelajaranFactory extends Factory
      */
     public function definition(): array
     {
+        $pelajarans = [
+            'Matematika',
+            'Bahasa Indonesia',
+            'Bahasa Inggris',
+            'IPA',
+            'IPS',
+        ];
+
         return [
-            'nama_pelajaran' => $this->faker->name(),
+            'nama_pelajaran' => $this->faker->randomElement($pelajarans),
             'kode_pelajaran' => $this->faker->unique()->lexify('??-###')
         ];
     }
