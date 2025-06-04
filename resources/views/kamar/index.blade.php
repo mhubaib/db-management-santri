@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Jadwal')
+@section('title', 'Daftar Kamar')
 
 @section('content')
     <div class="bg-white overflow-hidden shadow-xl rounded-lg border border-gray-100">
         <div class="px-8 py-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-primary-800">Daftar Jadwal</h2>
-                <a href="{{ route('jadwal.create') }}"
+                <h2 class="text-2xl font-bold text-primary-800">Daftar Kamar</h2>
+                <a href="{{ route('kamar.create') }}"
                     class="px-5 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-300 flex items-center gap-2 font-medium shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    Tambah Jadwal
+                    Tambah Kamar
                 </a>
             </div>
 
-            <!-- Search and Filter Section -->
+            <!-- Search Section -->
             <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <form action="{{ route('jadwal.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
+                <form action="{{ route('kamar.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
                     <div class="relative flex-grow flex overflow-hidden rounded-lg border border-gray-200">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -31,8 +31,8 @@
                         </div>
                         <input type="text" name="search" value="{{ request('search') }}"
                             class="bg-white text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 border-none rounded-none"
-                            placeholder="Cari jadwal..." />
-                        <button type="submit" name="search_btn"
+                            placeholder="Cari kamar..." />
+                        <button type="submit"
                             class="px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-800 transition-all duration-100 flex items-center gap-2 font-medium shadow-sm border-none rounded-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
@@ -42,49 +42,19 @@
                             Cari
                         </button>
                     </div>
-                    <div class="flex gap-3 flex-wrap sm:flex-nowrap">
-                        <select name="pelajaran"
-                            class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5">
-                            <option value="">Semua Pelajaran</option>
-                            @foreach ($pelajaran->pluck('nama_pelajaran')->unique() as $p)
-                                <option value="{{ $p }}" {{ request('pelajaran') == $p ? 'selected' : '' }}>
-                                    {{ $p }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <button type="submit" name="filter" id="filterButton"
-                            class="px-4 py-2.5 bg-secondary-400 text-white rounded-lg transition-all duration-300 flex items-center gap-2 font-medium shadow-sm opacity-50 cursor-not-allowed"
-                            disabled>
+                    @if (request()->filled('search'))
+                        <a href="{{ route('kamar.index') }}"
+                            class="px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 flex items-center gap-2 font-medium shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
-                                    d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Filter
-                        </button>
-
-                        @if (request()->anyFilled(['search', 'kelas', 'pelajaran']))
-                            <a href="{{ route('jadwal.index') }}"
-                                class="px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 flex items-center gap-2 font-medium shadow-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                Reset
-                            </a>
-                        @endif
-                    </div>
+                            Reset
+                        </a>
+                    @endif
                 </form>
             </div>
-
-            @if (session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                    role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 table-fixed">
@@ -95,20 +65,8 @@
                                 No
                             </th>
                             <th scope="col"
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">
-                                Nama
-                            </th>
-                            <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Pelajaran
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Ustadz
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Jam
+                                Nama Kamar
                             </th>
                             <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">
@@ -117,28 +75,17 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse ($jadwals as $index => $jadwal)
+                        @forelse ($kamar as $index => $kmr)
                             <tr class="hover:bg-gray-50 transition-colors duration-200">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ ($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                                        {{ $jadwal->nama }}
-                                    </span>
+                                    {{ $index + 1 }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-700">
-                                    {{ $jadwal->pelajaran->nama_pelajaran }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $jadwal->ustadz->nama }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}
+                                    {{ $kmr->nama_kamar }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
-                                        <a href="{{ route('jadwal.show', $jadwal->id) }}"
+                                        <a href="{{ route('kamar.show', $kmr->id) }}"
                                             class="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
                                             title="Detail">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -149,7 +96,7 @@
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('jadwal.edit', $jadwal->id) }}"
+                                        <a href="{{ route('kamar.edit', $kmr->id) }}"
                                             class="p-1.5 text-yellow-600 hover:bg-yellow-50 rounded transition-colors duration-200"
                                             title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -158,7 +105,7 @@
                                                     d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                             </svg>
                                         </a>
-                                        <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST"
+                                        <form action="{{ route('kamar.destroy', $kmr->id) }}" method="POST"
                                             class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -166,8 +113,8 @@
                                                 class="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
                                                 onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
                                                 title="Hapus">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                    fill="currentColor">
                                                     <path fill-rule="evenodd"
                                                         d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                         clip-rule="evenodd" />
@@ -179,7 +126,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6"
+                                <td colspan="3"
                                     class="px-6 py-10 whitespace-nowrap text-sm text-gray-500 text-center bg-gray-50">
                                     <div class="flex flex-col items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-3"
@@ -187,8 +134,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
-                                        <p class="font-medium">Tidak ada data jadwal</p>
-                                        <p class="text-gray-400 mt-1">Silahkan tambahkan data jadwal terlebih dahulu</p>
+                                        <p class="font-medium">Tidak ada data kamar</p>
+                                        <p class="text-gray-400 mt-1">Silahkan tambahkan data kamar terlebih dahulu</p>
                                     </div>
                                 </td>
                             </tr>
@@ -216,45 +163,12 @@
                     }
                 </style>
             @endpush
-            @if ($jadwals->hasPages())
+
+            @if (isset($kamars) && method_exists($kamars, 'hasPages') && $kamars->hasPages())
                 <div class="px-6 py-4 bg-white border-t border-gray-200">
-                    {{ $jadwals->withQueryString()->links() }}
+                    {{ $kamars->withQueryString()->links() }}
                 </div>
             @endif
         </div>
     </div>
-
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const filterKelas = document.querySelector('select[name="kelas"]');
-                const filterPelajaran = document.querySelector('select[name="pelajaran"]');
-                const filterButton = document.getElementById('filterButton');
-
-                const allFilters = [filterKelas, filterPelajaran];
-
-                function checkFilters() {
-                    const hasActiveFilter = allFilters.some(filter => filter.value !== "");
-
-                    if (hasActiveFilter) {
-                        filterButton.classList.remove('bg-secondary-400', 'cursor-not-allowed', 'opacity-50');
-                        filterButton.classList.add('bg-primary-600', 'hover:bg-primary-800', 'cursor-pointer');
-                        filterButton.disabled = false;
-                    } else {
-                        filterButton.classList.remove('bg-primary-600', 'hover:bg-primary-800', 'cursor-pointer');
-                        filterButton.classList.add('bg-secondary-400', 'cursor-not-allowed', 'opacity-50');
-                        filterButton.disabled = true;
-                    }
-                }
-
-                allFilters.forEach(filter => {
-                    if (filter) {
-                        filter.addEventListener('change', checkFilters);
-                    }
-                });
-
-                checkFilters();
-            });
-        </script>
-    @endpush
 @endsection

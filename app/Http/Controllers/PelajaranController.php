@@ -10,11 +10,23 @@ class PelajaranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pelajarans = Pelajaran::latest()->get();
+        $query = Pelajaran::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = strtolower($request->search);
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereRaw('LOWER(nama_pelajaran) LIKE ?', ['%'. $searchTerm. '%'])
+                  ->orWhereRaw('LOWER(CAST(kode_pelajaran AS TEXT)) LIKE ?', ['%'. $searchTerm. '%']);
+            });
+        }
+
+        $pelajarans = $query->paginate(15)->withQueryString();
+
         return view('pelajaran.index', compact('pelajarans'));
     }
+
 
     /**
      * Show the form for creating a new resource.

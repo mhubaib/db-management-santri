@@ -8,14 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Absensi extends Model
 {
-    /** @use HasFactory<\Database\Factories\AbsensiFactory> */
     use HasFactory;
 
     protected $fillable = [
+        'tanggal',
         'santri_id',
         'jadwal_id',
         'status',
         'keterangan',
+        'kelas_id', // Tambahkan ini
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 
     public function santri(): BelongsTo
@@ -26,5 +31,10 @@ class Absensi extends Model
     public function jadwal(): BelongsTo
     {
         return $this->belongsTo(Jadwal::class);
+    }
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(Kelas::class);
     }
 }

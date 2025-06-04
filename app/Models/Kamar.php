@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kamar extends Model
 {
@@ -15,8 +16,8 @@ class Kamar extends Model
         'nama_kamar',
     ];
     
-    public function santri(): BelongsToMany
+    public function santri(): HasMany
     {
-        return $this->belongsToMany(Santri::class);
+        return $this->hasMany(Santri::class);
     }
 }

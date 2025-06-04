@@ -12,18 +12,12 @@ class Jadwal extends Model
     use HasFactory;
     
     protected $fillable = [
-        'kelas_id',
+        'nama',
         'pelajaran_id',
         'ustadz_id',
-        'hari',
         'jam_mulai',
         'jam_selesai',
     ];
-
-    public function kelas(): BelongsTo
-    {
-        return $this->belongsTo(Kelas::class);
-    }
 
     public function pelajaran(): BelongsTo
     {
@@ -40,3 +34,4 @@ class Jadwal extends Model
         return $this->hasMany(Absensi::class);
     }
 }
+

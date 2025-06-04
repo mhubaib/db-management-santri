@@ -12,11 +12,11 @@
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                 <div>
-                    <label for="kelas_id" class="block text-sm font-medium text-gray-700">Kelas</label>
-                    <select name="kelas_id" id="kelas_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                        <option value="">Pilih Kelas</option>
-                        @foreach ($kelas as $k)
-                            <option value="{{ $k->id }}" {{ old('kelas_id') == $k->id ? 'selected' : '' }}>{{ $k->tingkatan }}</option>
+                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
+                    <select name="nama" id="kelas_id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        <option value="">Pilih Sesi</option>
+                        @foreach ($jadwals as $jadwal)
+                            <option value="{{ $jadwal->id }}" {{ old('nama') == $jadwal->id ? 'selected' : '' }}>{{ $jadwal->nama }}</option>
                         @endforeach
                     </select>
                     @error('kelas_id')
@@ -48,30 +48,20 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="hari" class="block text-sm font-medium text-gray-700">Hari</label>
-                    <select name="hari" id="hari" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                        <option value="">Pilih Hari</option>
-                        @foreach ($hari as $h)
-                            <option value="{{ $h }}" {{ old('hari') == $h ? 'selected' : '' }}>{{ $h }}</option>
-                        @endforeach
-                    </select>
-                    @error('hari')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div>
-                    <label for="jam_mulai" class="block text-sm font-medium text-gray-700">Jam Mulai</label>
-                    <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                    @error('jam_mulai')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div>
-                    <label for="jam_selesai" class="block text-sm font-medium text-gray-700">Jam Selesai</label>
-                    <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                    @error('jam_selesai')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <div>
+                        <label for="jam_mulai" class="block text-sm font-medium text-gray-700">Jam Mulai</label>
+                        <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        @error('jam_mulai')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="jam_selesai" class="block text-sm font-medium text-gray-700">Jam Selesai</label>
+                        <input type="time" name="jam_selesai" id="jam_selesai" value="{{ old('jam_selesai') }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        @error('jam_selesai')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="flex items-center justify-end space-x-3">

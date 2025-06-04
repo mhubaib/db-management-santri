@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade');
+            $table->string('nama');
             $table->foreignId('pelajaran_id')->constrained('pelajarans')->onDelete('cascade');
             $table->foreignId('ustadz_id')->constrained('ustadzs')->onDelete('cascade');
-            $table->string('hari');
             $table->string('jam_mulai');
             $table->string('jam_selesai');
             $table->timestamps();

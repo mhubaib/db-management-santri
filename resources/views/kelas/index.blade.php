@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Jadwal')
+@section('title', 'Daftar Kelas')
 
 @section('content')
     <div class="bg-white overflow-hidden shadow-xl rounded-lg border border-gray-100">
         <div class="px-8 py-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-primary-800">Daftar Jadwal</h2>
-                <a href="{{ route('jadwal.create') }}"
+                <h2 class="text-2xl font-bold text-primary-800">Daftar Kelas</h2>
+                <a href="{{ route('kelas.create') }}"
                     class="px-5 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-300 flex items-center gap-2 font-medium shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    Tambah Jadwal
+                    Tambah Kelas
                 </a>
             </div>
 
             <!-- Search and Filter Section -->
             <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <form action="{{ route('jadwal.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
+                <form action="{{ route('kelas.index') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
                     <div class="relative flex-grow flex overflow-hidden rounded-lg border border-gray-200">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -29,9 +29,9 @@
                                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="text" name="search" value="{{ request('search') }}"
+                        <input type="text" name="search"
                             class="bg-white text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 border-none rounded-none"
-                            placeholder="Cari jadwal..." />
+                            placeholder="Cari kelas..." value="{{ request('search') }}" />
                         <button type="submit" name="search_btn"
                             class="px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-800 transition-all duration-100 flex items-center gap-2 font-medium shadow-sm border-none rounded-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -43,13 +43,13 @@
                         </button>
                     </div>
                     <div class="flex gap-3 flex-wrap sm:flex-nowrap">
-                        <select name="pelajaran"
+                        <select name="tingkatan"
                             class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5">
-                            <option value="">Semua Pelajaran</option>
-                            @foreach ($pelajaran->pluck('nama_pelajaran')->unique() as $p)
-                                <option value="{{ $p }}" {{ request('pelajaran') == $p ? 'selected' : '' }}>
-                                    {{ $p }}
-                                </option>
+                            <option value="">Semua Tingkatan</option>
+                            @foreach ($kelas->pluck('tingkatan')->unique() as $tingkatan)
+                            <option value="{{ $tingkatan }}" {{ request('tingkatan') == $tingkatan ? 'selected' : '' }}>
+                                {{ $tingkatan }}
+                            </option>   
                             @endforeach
                         </select>
                         <button type="submit" name="filter" id="filterButton"
@@ -63,8 +63,8 @@
                             Filter
                         </button>
 
-                        @if (request()->anyFilled(['search', 'kelas', 'pelajaran']))
-                            <a href="{{ route('jadwal.index') }}"
+                        @if (request()->anyFilled(['search', 'tingkatan']))
+                            <a href="{{ route('kelas.index') }}"
                                 class="px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 flex items-center gap-2 font-medium shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                     fill="currentColor">
@@ -79,66 +79,41 @@
                 </form>
             </div>
 
-            @if (session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                    role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
-
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 table-fixed">
                     <thead>
                         <tr class="bg-gray-50">
                             <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">
-                                No
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">
-                                Nama
-                            </th>
+                                No</th>
                             <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Pelajaran
-                            </th>
+                                Nama Kelas</th>
                             <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Ustadz
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Jam
-                            </th>
+                                Tingkatan</th>
                             <th scope="col"
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">
-                                Aksi
-                            </th>
+                                Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse ($jadwals as $index => $jadwal)
+                        @forelse ($kelas as $index => $kls)
                             <tr class="hover:bg-gray-50 transition-colors duration-200">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ ($jadwals->currentPage() - 1) * $jadwals->perPage() + $loop->iteration }}
+                                    {{ $loop->iteration }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-700">
+                                    {{ $kls->nama_kelas }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                                        {{ $jadwal->nama }}
+                                        {{ ucfirst($kls->tingkatan) }}
                                     </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-700">
-                                    {{ $jadwal->pelajaran->nama_pelajaran }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $jadwal->ustadz->nama }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
-                                        <a href="{{ route('jadwal.show', $jadwal->id) }}"
+                                        <a href="{{ route('kelas.show', $kls->id) }}"
                                             class="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
                                             title="Detail">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -149,7 +124,7 @@
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('jadwal.edit', $jadwal->id) }}"
+                                        <a href="{{ route('kelas.edit', $kls->id) }}"
                                             class="p-1.5 text-yellow-600 hover:bg-yellow-50 rounded transition-colors duration-200"
                                             title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -158,7 +133,7 @@
                                                     d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                             </svg>
                                         </a>
-                                        <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST"
+                                        <form action="{{ route('kelas.destroy', $kls->id) }}" method="POST"
                                             class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -179,7 +154,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6"
+                                <td colspan="4"
                                     class="px-6 py-10 whitespace-nowrap text-sm text-gray-500 text-center bg-gray-50">
                                     <div class="flex flex-col items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-3"
@@ -187,8 +162,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
-                                        <p class="font-medium">Tidak ada data jadwal</p>
-                                        <p class="text-gray-400 mt-1">Silahkan tambahkan data jadwal terlebih dahulu</p>
+                                        <p class="font-medium">Tidak ada data kelas</p>
+                                        <p class="text-gray-400 mt-1">Silahkan tambahkan data kelas terlebih dahulu</p>
                                     </div>
                                 </td>
                             </tr>
@@ -216,22 +191,21 @@
                     }
                 </style>
             @endpush
-            @if ($jadwals->hasPages())
+            {{-- @if ($kelas->hasPages())
                 <div class="px-6 py-4 bg-white border-t border-gray-200">
-                    {{ $jadwals->withQueryString()->links() }}
+                    {{ $kelas->withQueryString()->links() }}
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const filterKelas = document.querySelector('select[name="kelas"]');
-                const filterPelajaran = document.querySelector('select[name="pelajaran"]');
+                const filterTingkatan = document.querySelector('select[name="tingkatan"]');
                 const filterButton = document.getElementById('filterButton');
 
-                const allFilters = [filterKelas, filterPelajaran];
+                const allFilters = [filterTingkatan];
 
                 function checkFilters() {
                     const hasActiveFilter = allFilters.some(filter => filter.value !== "");
@@ -243,7 +217,7 @@
                     } else {
                         filterButton.classList.remove('bg-primary-600', 'hover:bg-primary-800', 'cursor-pointer');
                         filterButton.classList.add('bg-secondary-400', 'cursor-not-allowed', 'opacity-50');
-                        filterButton.disabled = true;
+                        filterButton.disabled = true
                     }
                 }
 
@@ -254,7 +228,7 @@
                 });
 
                 checkFilters();
-            });
+            })
         </script>
     @endpush
 @endsection

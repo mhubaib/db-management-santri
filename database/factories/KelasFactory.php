@@ -18,7 +18,7 @@ class KelasFactory extends Factory
     {
         return [
             'nama_kelas' => $this->faker->unique()->name,
-            'tingkatan' => $this->faker->randomElement(['ula', 'wustha', 'ulya']),
+            'tingkatan' => $this->faker->numberBetween(1, 12),
         ];
     }
 }

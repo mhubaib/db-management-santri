@@ -11,11 +11,31 @@ class UstadzController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $ustadzs = Ustadz::with('pelajarans')->latest()->get();
-        return view('ustadz.index', compact('ustadzs'));
+        $query = Ustadz::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = strtolower($request->search);
+
+            $query->whereRaw('LOWER(nama) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(nip::text) LIKE ?', ["%$search%"]); // ← CAST nip jadi teks
+        }
+
+        if ($request->has('spesialisasi') && $request->spesialisasi != '') {
+            $query->where('spesialisasi', $request->spesialisasi);
+        }
+
+        $spesialisasis = Ustadz::distinct()->pluck('spesialisasi')->toArray();
+
+        $ustadzs = $query->latest()->paginate(10);
+
+        return view('ustadz.index', compact('ustadzs', 'spesialisasis'));
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.

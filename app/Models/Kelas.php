@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Kelas extends Model
 {
@@ -16,13 +18,13 @@ class Kelas extends Model
         'tingkatan'
     ];
 
-    public function santri(): BelongsToMany
+    public function santri(): HasMany
     {
-        return $this->belongsToMany(Santri::class);
-    }
-
-    public function jadwal(): BelongsToMany
-    {
-        return $this->belongsToMany(Jadwal::class);
+        return $this->hasMany(Santri::class);
     } 
+
+    public function absensis(): HasMany
+    {
+        return $this->hasMany(Absensi::class);
+    }
 }

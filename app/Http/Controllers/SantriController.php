@@ -12,10 +12,31 @@ class SantriController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $santris = Santri::with(['kelas', 'kamar'])->latest()->get();
-        return view('santri.index', compact('santris'));
+        $query = Santri::query()->with(['kelas', 'kamar']);
+        
+        if ($request->filled('search')) {
+            $searchTerm = strtolower($request->search);
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereRaw('LOWER(nama) LIKE ?', ['%' . $searchTerm . '%'])
+                  ->orWhereRaw('LOWER(CAST(nis AS TEXT)) LIKE ?', ['%' . $searchTerm . '%']);
+            });
+        }
+        
+        if ($request->filled('kelas')) {
+            $query->where('kelas_id', $request->kelas);
+        }
+        
+        if ($request->filled('kamar')) {
+            $query->where('kamar_id', $request->kamar);
+        }
+        
+        $santris = $query->latest()->paginate(10)->withQueryString();
+        $kelas = Kelas::all();
+        $kamar = Kamar::all();
+        
+        return view('santri.index', compact('santris', 'kelas', 'kamar'));
     }
 
     /**

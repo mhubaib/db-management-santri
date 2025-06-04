@@ -33,10 +33,8 @@
                             required>
                             <option value="">Pilih Jadwal</option>
                             @foreach ($jadwals as $jadwal)
-                                <option value="{{ $jadwal->id }}"
-                                    {{ old('jadwal_id', $absensi->jadwal_id) == $jadwal->id ? 'selected' : '' }}>
-                                    {{ $jadwal->hari }} - {{ $jadwal->jam_mulai }} s/d {{ $jadwal->jam_selesai }} -
-                                    {{ $jadwal->pelajaran->nama_pelajaran ?? '-' }}
+                                <option value="{{ $jadwal->id }}" {{ old('jadwal_id', $absensi->jadwal_id) == $jadwal->id ? 'selected' : '' }}>
+                                    {{ $jadwal->hari }} - {{ $jadwal->jam_mulai }} s/d {{ $jadwal->jam_selesai }} - {{ $jadwal->pelajaran->nama_pelajaran ?? '-' }} - {{ $jadwal->kelas->nama_kelas }} - {{ $jadwal->kelas->tingkatan }}
                                 </option>
                             @endforeach
                         </select>
@@ -57,6 +55,8 @@
                             <option value="sakit" {{ old('status', $absensi->status) == 'sakit' ? 'selected' : '' }}>Sakit
                             </option>
                             <option value="alpa" {{ old('status', $absensi->status) == 'alpa' ? 'selected' : '' }}>Alpa
+                            </option>
+                            <option value="terlambat" {{ old('status', $absensi->status) == 'terlambat' ? 'selected' : '' }}>Terlambat
                             </option>
                         </select>
                         @error('status')

@@ -14,11 +14,26 @@
                         <dd class="mt-1 text-sm text-gray-900">{{ $absensi->santri->nama }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">Jadwal</dt>
+                        <dt class="text-sm font-medium text-gray-500">Kelas</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $absensi->kelas->nama_kelas }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Tingkatan</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $absensi->kelas->tingkatan }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Tanggal</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $absensi->tanggal->format('d-m-Y') }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Sesi</dt>
                         <dd class="mt-1 text-sm text-gray-900">
-                            {{ $absensi->jadwal->hari }} - {{ $absensi->jadwal->jam_mulai }} s/d
-                            {{ $absensi->jadwal->jam_selesai }} - {{ $absensi->jadwal->pelajaran->nama_pelajaran ?? '-' }}
+                            {{ $absensi->jadwal->jam_mulai }} s/d {{ $absensi->jadwal->jam_selesai }}
                         </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Pelajaran</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $absensi->jadwal->pelajaran->nama_pelajaran }}</dd>
                     </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Status</dt>

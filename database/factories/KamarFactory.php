@@ -17,7 +17,7 @@ class KamarFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama_kamar' => $this->faker->unique()->numberBetween(1, 10),
+            'nama_kamar' => $this->faker->unique()->name,
         ];
     }
 }

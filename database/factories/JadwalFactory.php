@@ -20,10 +20,9 @@ class JadwalFactory extends Factory
     public function definition(): array
     {
         return [
-            'kelas_id' => Kelas::inRandomOrder()->first()->id?? Kelas::factory(),
+            'nama' => $this->faker->name(),
             'pelajaran_id' => Pelajaran::inRandomOrder()->first()->id?? Pelajaran::factory(),
             'ustadz_id' => Ustadz::inRandomOrder()->first()->id?? Ustadz::factory(),
-            'hari' => $this->faker->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']),
             'jam_mulai' => $this->faker->time('H:i'),
             'jam_selesai' => $this->faker->time('H:i'),
         ];
